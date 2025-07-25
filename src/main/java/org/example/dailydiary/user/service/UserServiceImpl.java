@@ -6,6 +6,7 @@ import org.example.dailydiary.common.security.JwtUtil;
 import org.example.dailydiary.user.dto.request.CreateUserRequestDto;
 import org.example.dailydiary.user.dto.request.LoginUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
+import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
 import org.example.dailydiary.user.entity.User;
 import org.example.dailydiary.user.repository.UserRepository;
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService{
 
 	public LoginUserResponseDto loginUser(LoginUserRequestDto requestDto) {
 
-		User user = findUser(requestDto.getEmail());
+		User user = findUserByEmail(requestDto.getEmail());
 
 		if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
 			throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
@@ -60,12 +61,24 @@ public class UserServiceImpl implements UserService{
 		return new LoginUserResponseDto(user.getId(), accessToken, refreshToken);
 	}
 
+	public GetProfileResponseDto getProfile(Long userId) {
+
+		User user = findUserById(userId);
+
+		return new GetProfileResponseDto(user);
+	}
+
 	public boolean isExistUser(String email) {
 		return userRepository.findByEmail(email).isPresent();
 	}
 
-	public User findUser(String email) {
+	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+	}
+
+	public User findUserById(Long userId) {
+		return userRepository.findById(userId)
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 	}
 }

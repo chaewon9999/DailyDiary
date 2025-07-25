@@ -1,17 +1,22 @@
 package org.example.dailydiary.user.controller;
 
+import org.example.dailydiary.common.security.CustomUserPrincipal;
 import org.example.dailydiary.user.dto.request.CreateUserRequestDto;
 import org.example.dailydiary.user.dto.request.LoginUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
+import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
 import org.example.dailydiary.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,7 +28,7 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<CreateUserResponseDto> createUser(
-		@RequestBody CreateUserRequestDto requestDto
+		@RequestBody @Valid CreateUserRequestDto requestDto
 	) {
 		CreateUserResponseDto responseDto = userService.saveUser(requestDto);
 
@@ -33,11 +38,22 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginUserResponseDto> loginUser(
-		@RequestBody LoginUserRequestDto requestDto
+		@RequestBody @Valid LoginUserRequestDto requestDto
 	) {
 		LoginUserResponseDto responseDto = userService.loginUser(requestDto);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(responseDto);
 	}
+
+	@GetMapping
+	public ResponseEntity<GetProfileResponseDto> getProfile(
+		@AuthenticationPrincipal CustomUserPrincipal principal
+	) {
+		GetProfileResponseDto responseDto = userService.getProfile(principal.userIdConverter());
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(responseDto);
+	}
+
 }

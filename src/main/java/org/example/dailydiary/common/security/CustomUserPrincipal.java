@@ -22,6 +22,10 @@ public class CustomUserPrincipal implements UserDetails {
 		return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
 	}
 
+	public Long userIdConverter() {
+		return user.getId();
+	}
+
 	@Override
 	public String getPassword() {return ""; }
 	@Override

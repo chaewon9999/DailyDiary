@@ -33,9 +33,10 @@ public class JwtUtil {
 			.compact();
 	}
 
-	public String generateRefreshToken(Long userId) {
+	public String generateRefreshToken(Long userId, UserRole role) {
 		return "Bearer " + Jwts.builder()
 			.setSubject(String.valueOf(userId))
+			.claim("role", role)
 			.claim("type", "refresh")
 			.setIssuedAt(new Date())
 			.setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME))

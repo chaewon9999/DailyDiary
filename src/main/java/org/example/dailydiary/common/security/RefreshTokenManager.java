@@ -15,12 +15,15 @@ public class RefreshTokenManager {
 	}
 
 	public boolean isValidRefreshToken(Long userId, String refreshToken) {
-		String storedToken = userRefreshTokens.get(userId);
-		return refreshToken.equals(storedToken);
+		String savedToken = userRefreshTokens.get(userId);
+		return refreshToken.equals(savedToken);
 	}
 
 	public void removeRefreshToken(Long userId) {
-		userRefreshTokens.remove(userId); // 로그아웃시
+		userRefreshTokens.remove(userId);
 	}
 
+	public String getRefreshToken(Long userId) {
+		return userRefreshTokens.get(userId);
+	}
 }

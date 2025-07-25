@@ -11,6 +11,7 @@ public enum ErrorCode {
 
 	//common
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근할 권한이 없습니다."),
+	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
 	//user
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),

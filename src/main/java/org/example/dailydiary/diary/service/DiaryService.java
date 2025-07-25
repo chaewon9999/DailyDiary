@@ -11,4 +11,6 @@ public interface DiaryService {
 	CreateDiaryResponseDto saveDiary(Long userId, CreateDiaryRequestDto requestDto);
 
 	Page<GetDiaryResponseDto> getAllDiary(Long userId, Pageable pageable);
+
+	GetDiaryResponseDto getDiaryById(Long userId, Long diaryId);
 }

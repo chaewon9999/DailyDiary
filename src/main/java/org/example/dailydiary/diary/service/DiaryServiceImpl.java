@@ -1,5 +1,7 @@
 package org.example.dailydiary.diary.service;
 
+import org.example.dailydiary.common.exception.CustomException;
+import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.diary.dto.request.CreateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.response.CreateDiaryResponseDto;
 import org.example.dailydiary.diary.dto.response.GetDiaryResponseDto;
@@ -46,5 +48,23 @@ public class DiaryServiceImpl implements DiaryService{
 		Page<Diary> diaries = diaryRepository.findByUserId(userId, pageable);
 
 		return diaries.map(GetDiaryResponseDto::new);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public GetDiaryResponseDto getDiaryById(Long userId, Long diaryId) {
+
+		Diary diary = findDiaryById(diaryId);
+
+		if (!diary.getUserId().equals(userId)) {
+			throw new CustomException(ErrorCode.FORBIDDEN);
+		}
+
+		return new GetDiaryResponseDto(diary);
+	}
+
+	public Diary findDiaryById(Long diaryId) {
+		return diaryRepository.findById(diaryId)
+			.orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
 	}
 }

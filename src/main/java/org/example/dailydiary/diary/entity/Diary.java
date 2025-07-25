@@ -51,4 +51,8 @@ public class Diary extends BaseEntity {
 		this.feeling = feeling;
 		this.user = user;
 	}
+
+	public Long getUserId() {
+		return this.user.getId();
+	}
 }

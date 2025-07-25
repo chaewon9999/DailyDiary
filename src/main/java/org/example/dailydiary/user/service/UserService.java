@@ -17,4 +17,6 @@ public interface UserService {
 	GetProfileResponseDto getProfile(Long userId);
 
 	UpdateUserResponseDto updateProfile(Long userId, UpdateUserRequestDto requestDto);
+
+	void deleteUser(Long userId);
 }

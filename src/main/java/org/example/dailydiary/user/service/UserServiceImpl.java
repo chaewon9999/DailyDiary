@@ -86,6 +86,15 @@ public class UserServiceImpl implements UserService{
 		return new UpdateUserResponseDto(userId, "회원 정보 수정을 완료했습니다.");
 	}
 
+	@Transactional
+	public void deleteUser(Long userId) {
+
+		User user = findUserById(userId);
+
+		user.deleteEntity();
+
+	}
+
 	public boolean isExistUser(String email) {
 		return userRepository.findByEmail(email).isPresent();
 	}

@@ -1,6 +1,8 @@
 package org.example.dailydiary.user.entity;
 
+import org.example.dailydiary.common.entity.BaseEntity;
 import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
+import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class User {
+@SQLRestriction("deleted_at IS NULL")
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,4 +52,5 @@ public class User {
 		this.password = password;
 		this.nickname = requestDto.getNickname();
 	}
+
 }

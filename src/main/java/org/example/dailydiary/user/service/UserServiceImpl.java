@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	//로그인
+	@Override
 	@Transactional
 	public LoginUserResponseDto loginUser(LoginUserRequestDto requestDto) {
 
@@ -67,6 +68,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	//유저 정보 조회
+	@Override
 	@Transactional(readOnly = true)
 	public GetProfileResponseDto getProfile(Long userId) {
 
@@ -76,6 +78,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	//유저 정보 수정
+	@Override
 	@Transactional
 	public UpdateUserResponseDto updateProfile(Long userId, UpdateUserRequestDto requestDto) {
 
@@ -91,6 +94,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	//유저 삭제
+	@Override
 	@Transactional
 	public void deleteUser(Long userId) {
 

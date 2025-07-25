@@ -6,6 +6,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +38,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false)
 	private String nickname;
 
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private UserRole role;
 

@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public User findUserById(Long userId) {
-		return userRepository.findById(userId)
+		return userRepository.findByIdAndDeletedAtIsNull(userId)
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 	}
 }

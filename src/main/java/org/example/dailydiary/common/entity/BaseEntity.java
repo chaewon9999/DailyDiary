@@ -30,4 +30,8 @@ public class BaseEntity {
 	public void deleteEntity() {
 		this.deletedAt = LocalDateTime.now();
 	}
+
+	public void reactive() {
+		this.deletedAt = null;
+	}
 }

@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@SQLRestriction("deleted_at IS NULL")
 public class User extends BaseEntity {
 
 	@Id
@@ -56,4 +55,7 @@ public class User extends BaseEntity {
 		this.nickname = requestDto.getNickname();
 	}
 
+	public void reactiveUser() {
+		this.reactive();
+	}
 }

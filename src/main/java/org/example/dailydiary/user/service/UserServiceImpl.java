@@ -5,9 +5,11 @@ import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.common.security.JwtUtil;
 import org.example.dailydiary.user.dto.request.CreateUserRequestDto;
 import org.example.dailydiary.user.dto.request.LoginUserRequestDto;
+import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
 import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
+import org.example.dailydiary.user.dto.response.UpdateUserResponseDto;
 import org.example.dailydiary.user.entity.User;
 import org.example.dailydiary.user.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService{
 		return new CreateUserResponseDto(savedUser.getId(), "회원가입을 완료했습니다.");
 	}
 
+	@Transactional
 	public LoginUserResponseDto loginUser(LoginUserRequestDto requestDto) {
 
 		User user = findUserByEmail(requestDto.getEmail());
@@ -61,11 +64,26 @@ public class UserServiceImpl implements UserService{
 		return new LoginUserResponseDto(user.getId(), accessToken, refreshToken);
 	}
 
+	@Transactional(readOnly = true)
 	public GetProfileResponseDto getProfile(Long userId) {
 
 		User user = findUserById(userId);
 
 		return new GetProfileResponseDto(user);
+	}
+
+	@Transactional
+	public UpdateUserResponseDto updateProfile(Long userId, UpdateUserRequestDto requestDto) {
+
+		User user = findUserById(userId);
+
+		if (!requestDto.getPassword().equals(requestDto.getCheckPassword())) {
+			throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
+		}
+
+		user.updateUser(requestDto, passwordEncoder.encode(requestDto.getPassword()));
+
+		return new UpdateUserResponseDto(userId, "회원 정보 수정을 완료했습니다.");
 	}
 
 	public boolean isExistUser(String email) {

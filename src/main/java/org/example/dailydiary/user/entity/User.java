@@ -1,5 +1,7 @@
 package org.example.dailydiary.user.entity;
 
+import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,5 +42,11 @@ public class User {
 		this.password = password;
 		this.nickname = nickname;
 		this.role = UserRole.USER;
+	}
+
+	public void updateUser(UpdateUserRequestDto requestDto, String password) {
+		this.email = requestDto.getEmail();
+		this.password = password;
+		this.nickname = requestDto.getNickname();
 	}
 }

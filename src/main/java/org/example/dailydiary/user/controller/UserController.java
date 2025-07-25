@@ -3,15 +3,18 @@ package org.example.dailydiary.user.controller;
 import org.example.dailydiary.common.security.CustomUserPrincipal;
 import org.example.dailydiary.user.dto.request.CreateUserRequestDto;
 import org.example.dailydiary.user.dto.request.LoginUserRequestDto;
+import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
 import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
+import org.example.dailydiary.user.dto.response.UpdateUserResponseDto;
 import org.example.dailydiary.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,4 +59,14 @@ public class UserController {
 			.body(responseDto);
 	}
 
+	@PutMapping
+	public ResponseEntity<UpdateUserResponseDto> updateProfile(
+		@AuthenticationPrincipal CustomUserPrincipal principal,
+		@RequestBody @Valid UpdateUserRequestDto requestDto
+	) {
+		UpdateUserResponseDto responseDto = userService.updateProfile(principal.userIdConverter(), requestDto);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(responseDto);
+	}
 }

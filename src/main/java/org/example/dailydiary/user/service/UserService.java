@@ -6,6 +6,7 @@ import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
 import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
+import org.example.dailydiary.user.dto.response.LogoutUserResponseDto;
 import org.example.dailydiary.user.dto.response.UpdateUserResponseDto;
 
 public interface UserService {
@@ -13,6 +14,8 @@ public interface UserService {
 	CreateUserResponseDto saveUser(CreateUserRequestDto requestDto);
 
 	LoginUserResponseDto loginUser(LoginUserRequestDto requestDto);
+
+	LogoutUserResponseDto logoutUser(Long userId);
 
 	GetProfileResponseDto getProfile(Long userId);
 

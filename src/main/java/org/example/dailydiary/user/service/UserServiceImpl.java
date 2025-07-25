@@ -3,12 +3,14 @@ package org.example.dailydiary.user.service;
 import org.example.dailydiary.common.exception.CustomException;
 import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.common.security.JwtUtil;
+import org.example.dailydiary.common.security.RefreshTokenManager;
 import org.example.dailydiary.user.dto.request.CreateUserRequestDto;
 import org.example.dailydiary.user.dto.request.LoginUserRequestDto;
 import org.example.dailydiary.user.dto.request.UpdateUserRequestDto;
 import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
 import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
+import org.example.dailydiary.user.dto.response.LogoutUserResponseDto;
 import org.example.dailydiary.user.dto.response.UpdateUserResponseDto;
 import org.example.dailydiary.user.entity.User;
 import org.example.dailydiary.user.repository.UserRepository;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService{
 	private final UserRepository userRepository;
 	private final JwtUtil jwtUtil;
 	private final BCryptPasswordEncoder passwordEncoder;
+	private final RefreshTokenManager tokenManager;
 
 	//회원가입
 	@Override
@@ -64,7 +67,19 @@ public class UserServiceImpl implements UserService{
 		String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getRole());
 		String refreshToken = jwtUtil.generateRefreshToken(user.getId());
 
+		tokenManager.saveRefreshToken(user.getId(), refreshToken);
+
 		return new LoginUserResponseDto(user.getId(), accessToken, refreshToken);
+	}
+
+	//로그아웃
+	@Override
+	@Transactional
+	public LogoutUserResponseDto logoutUser(Long userId) {
+
+		tokenManager.removeRefreshToken(userId);
+
+		return new LogoutUserResponseDto();
 	}
 
 	//유저 정보 조회
@@ -100,8 +115,9 @@ public class UserServiceImpl implements UserService{
 
 		User user = findUserById(userId);
 
-		user.deleteEntity();
+		tokenManager.removeRefreshToken(userId);
 
+		user.deleteEntity();
 	}
 
 	public boolean isExistUser(String email) {

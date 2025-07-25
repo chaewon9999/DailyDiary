@@ -8,6 +8,7 @@ import org.example.dailydiary.user.dto.response.CreateUserResponseDto;
 import org.example.dailydiary.user.dto.response.DeleteUserResponseDto;
 import org.example.dailydiary.user.dto.response.GetProfileResponseDto;
 import org.example.dailydiary.user.dto.response.LoginUserResponseDto;
+import org.example.dailydiary.user.dto.response.LogoutUserResponseDto;
 import org.example.dailydiary.user.dto.response.UpdateUserResponseDto;
 import org.example.dailydiary.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -56,6 +57,21 @@ public class UserController {
 		@RequestBody @Valid LoginUserRequestDto requestDto
 	) {
 		LoginUserResponseDto responseDto = userService.loginUser(requestDto);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(responseDto);
+	}
+
+	/**
+	 * 로그아웃
+	 * @param principal userId, userRole
+	 * @return 로그아웃 완료 메시지(String)
+	 */
+	@DeleteMapping("/logout")
+	public ResponseEntity<LogoutUserResponseDto> logoutUser(
+		@AuthenticationPrincipal CustomUserPrincipal principal
+	) {
+		LogoutUserResponseDto responseDto = userService.logoutUser(principal.userIdConverter());
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(responseDto);

@@ -24,7 +24,7 @@ public class JwtUtil {
 	private static final long REFRESH_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7;
 
 	public String generateAccessToken(Long userId, UserRole role) {
-		return Jwts.builder()
+		return "Bearer " + Jwts.builder()
 			.setSubject(String.valueOf(userId))
 			.claim("role", role)
 			.setIssuedAt(new Date())
@@ -34,7 +34,7 @@ public class JwtUtil {
 	}
 
 	public String generateRefreshToken(Long userId) {
-		return Jwts.builder()
+		return "Bearer " + Jwts.builder()
 			.setSubject(String.valueOf(userId))
 			.claim("type", "refresh")
 			.setIssuedAt(new Date())

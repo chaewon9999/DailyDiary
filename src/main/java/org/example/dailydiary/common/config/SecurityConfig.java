@@ -34,7 +34,7 @@ public class SecurityConfig {
 			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/signIn", "/login").permitAll()
+				.requestMatchers("/user/signup", "/user/login").permitAll()
 				.anyRequest().authenticated()
 			)
 			.logout(logout -> logout

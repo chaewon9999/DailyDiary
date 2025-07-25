@@ -11,6 +11,8 @@ public enum ErrorCode {
 
 	//user
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
+	EXIST_USER(HttpStatus.BAD_REQUEST, "이미 존재하는 유저입니다."),
+	PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.")
 	;
 
 	private final HttpStatus status;

@@ -34,6 +34,12 @@ public class DiaryController {
 
 	private final DiaryService diaryService;
 
+	/**
+	 * 일기 생성
+	 * @param principal userId, userRole
+	 * @param requestDto title, contents, feeling
+	 * @return diaryId, 일기 생성 완료 메시지(String)
+	 */
 	@PostMapping
 	public ResponseEntity<CreateDiaryResponseDto> createDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
@@ -45,6 +51,12 @@ public class DiaryController {
 			.body(response);
 	}
 
+	/**
+	 * 일기 전체 조회
+	 * @param principal userId, userRole
+	 * @param pageable 페이지 정보
+	 * @return diaryId, title, contents, feeling, createdAt, modifiedAt
+	 */
 	@GetMapping
 	public ResponseEntity<Page<GetDiaryResponseDto>> getAllDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
@@ -56,6 +68,12 @@ public class DiaryController {
 			.body(diaries);
 	}
 
+	/**
+	 * 일기 단건 조회
+	 * @param principal userId, userRole
+	 * @param diaryId diaryId
+	 * @return diaryId, title, contents, feeling, createdAt, modifiedAt
+	 */
 	@GetMapping("/{diaryId}")
 	public ResponseEntity<GetDiaryResponseDto> getDiaryById(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
@@ -67,6 +85,13 @@ public class DiaryController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 일기 수정
+	 * @param principal userId, userRole
+	 * @param diaryId diaryId
+	 * @param requestDto title, contents, feeling
+	 * @return diaryId, 일기 수정 완료 메시지(String)
+	 */
 	@PutMapping("/{diaryId}")
 	public ResponseEntity<UpdateDiaryResponseDto> updateDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
@@ -79,6 +104,12 @@ public class DiaryController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 일기 삭제
+	 * @param principal userId, userRole
+	 * @param diaryId diaryId
+	 * @return 일기 삭제 완료 메시지(String)
+	 */
 	@DeleteMapping("/{diaryId}")
 	public ResponseEntity<DeleteDiaryResponseDto> deleteDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,

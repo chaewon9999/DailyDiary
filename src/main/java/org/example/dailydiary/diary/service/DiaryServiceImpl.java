@@ -26,6 +26,7 @@ public class DiaryServiceImpl implements DiaryService{
 	private final DiaryRepository diaryRepository;
 	private final UserServiceImpl userService;
 
+	//일기 생성
 	@Override
 	@Transactional
 	public CreateDiaryResponseDto saveDiary(Long userId, CreateDiaryRequestDto requestDto) {
@@ -44,6 +45,7 @@ public class DiaryServiceImpl implements DiaryService{
 		return new CreateDiaryResponseDto(savedDiary.getId(), "일기를 저장했습니다.");
 	}
 
+	//일기 전체 조회
 	@Override
 	@Transactional(readOnly = true)
 	public Page<GetDiaryResponseDto> getAllDiary(Long userId, Pageable pageable) {
@@ -53,6 +55,7 @@ public class DiaryServiceImpl implements DiaryService{
 		return diaries.map(GetDiaryResponseDto::new);
 	}
 
+	//일기 단건 조회
 	@Override
 	@Transactional(readOnly = true)
 	public GetDiaryResponseDto getDiaryById(Long userId, Long diaryId) {
@@ -63,6 +66,7 @@ public class DiaryServiceImpl implements DiaryService{
 		return new GetDiaryResponseDto(diary);
 	}
 
+	//일기 수정
 	@Override
 	@Transactional
 	public UpdateDiaryResponseDto updateDiary(Long userId, Long diaryId, UpdateDiaryRequestDto requestDto) {
@@ -75,6 +79,7 @@ public class DiaryServiceImpl implements DiaryService{
 		return new UpdateDiaryResponseDto(diaryId, "일기 수정을 완료했습니다.");
 	}
 
+	//일기 삭제
 	@Override
 	@Transactional
 	public DeleteDiaryResponseDto deleteDiary(Long userId, Long diaryId) {

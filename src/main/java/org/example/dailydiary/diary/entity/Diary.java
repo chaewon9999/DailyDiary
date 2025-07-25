@@ -2,6 +2,7 @@ package org.example.dailydiary.diary.entity;
 
 import org.example.dailydiary.common.entity.BaseEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +24,13 @@ public class Diary extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String title;
 
+	@Column(nullable = false)
 	private String contents;
 
+	@Column(nullable = false)
 	private Feeling feeling;
 
 	@Builder

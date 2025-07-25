@@ -1,5 +1,6 @@
 package org.example.dailydiary.user.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,16 +22,23 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String email;
 
+	@Column(nullable = false)
 	private String password;
 
+	@Column(nullable = false)
 	private String nickname;
+
+	@Column(nullable = false)
+	private UserRole role;
 
 	@Builder
 	public User(String email, String password, String nickname) {
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
+		this.role = UserRole.USER;
 	}
 }

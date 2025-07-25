@@ -5,6 +5,7 @@ import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.diary.dto.request.CreateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.request.UpdateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.response.CreateDiaryResponseDto;
+import org.example.dailydiary.diary.dto.response.DeleteDiaryResponseDto;
 import org.example.dailydiary.diary.dto.response.GetDiaryResponseDto;
 import org.example.dailydiary.diary.dto.response.UpdateDiaryResponseDto;
 import org.example.dailydiary.diary.entity.Diary;
@@ -40,14 +41,14 @@ public class DiaryServiceImpl implements DiaryService{
 
 		Diary savedDiary = diaryRepository.save(diary);
 
-		return new CreateDiaryResponseDto(savedDiary.getId(), "일기를 저장했습니다");
+		return new CreateDiaryResponseDto(savedDiary.getId(), "일기를 저장했습니다.");
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Page<GetDiaryResponseDto> getAllDiary(Long userId, Pageable pageable) {
 
-		Page<Diary> diaries = diaryRepository.findByUserId(userId, pageable);
+		Page<Diary> diaries = diaryRepository.findByUser_Id(userId, pageable);
 
 		return diaries.map(GetDiaryResponseDto::new);
 	}
@@ -71,7 +72,19 @@ public class DiaryServiceImpl implements DiaryService{
 
 		diary.updateDiary(requestDto);
 
-		return new UpdateDiaryResponseDto(diaryId, "성공적으로 일기를 수정했습니다.");
+		return new UpdateDiaryResponseDto(diaryId, "일기 수정을 완료했습니다.");
+	}
+
+	@Override
+	@Transactional
+	public DeleteDiaryResponseDto deleteDiary(Long userId, Long diaryId) {
+
+		Diary diary = findDiaryById(diaryId);
+		isOwner(diary, userId);
+
+		diaryRepository.delete(diary);
+
+		return new DeleteDiaryResponseDto();
 	}
 
 	public Diary findDiaryById(Long diaryId) {

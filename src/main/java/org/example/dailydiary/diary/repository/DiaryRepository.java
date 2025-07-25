@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
 	@EntityGraph(attributePaths = {"user"})
-	Page<Diary> findByUserId(Long userId, Pageable pageable);
+	Page<Diary> findByUser_Id(Long userId, Pageable pageable);
 }

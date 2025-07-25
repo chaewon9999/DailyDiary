@@ -24,6 +24,11 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	/**
+	 * 토큰 재발급
+	 * @param request api 요청
+	 * @return accessToken
+	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<ReissueAccessTokenResponseDto> reissueAccessToken(
 		HttpServletRequest request
@@ -36,6 +41,12 @@ public class AuthController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 삭제된 유저 복구
+	 * @param principal adminId, userRole
+	 * @param userId 복구하려는 유저 id
+	 * @return 복구 완료 메시지(String)
+	 */
 	@PatchMapping("/reactive/user/{userId}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ReactiveUserResponseDto> reactiveUser(

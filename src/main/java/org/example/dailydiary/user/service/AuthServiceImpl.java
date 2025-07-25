@@ -24,6 +24,7 @@ public class AuthServiceImpl implements AuthService{
 	private final RefreshTokenManager tokenManager;
 	private final UserServiceImpl userService;
 
+	//토큰 재발급
 	@Override
 	@Transactional
 	public ReissueAccessTokenResponseDto reissueAccessToken(String authorization) {
@@ -53,6 +54,7 @@ public class AuthServiceImpl implements AuthService{
 		return new ReissueAccessTokenResponseDto(accessToken);
 	}
 
+	//삭제된 유저 복구
 	@Override
 	@Transactional
 	public ReactiveUserResponseDto reativeUser(Long adminId, Long userId) {

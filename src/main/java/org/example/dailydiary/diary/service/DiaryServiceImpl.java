@@ -3,8 +3,10 @@ package org.example.dailydiary.diary.service;
 import org.example.dailydiary.common.exception.CustomException;
 import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.diary.dto.request.CreateDiaryRequestDto;
+import org.example.dailydiary.diary.dto.request.UpdateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.response.CreateDiaryResponseDto;
 import org.example.dailydiary.diary.dto.response.GetDiaryResponseDto;
+import org.example.dailydiary.diary.dto.response.UpdateDiaryResponseDto;
 import org.example.dailydiary.diary.entity.Diary;
 import org.example.dailydiary.diary.repository.DiaryRepository;
 import org.example.dailydiary.user.entity.User;
@@ -55,16 +57,31 @@ public class DiaryServiceImpl implements DiaryService{
 	public GetDiaryResponseDto getDiaryById(Long userId, Long diaryId) {
 
 		Diary diary = findDiaryById(diaryId);
-
-		if (!diary.getUserId().equals(userId)) {
-			throw new CustomException(ErrorCode.FORBIDDEN);
-		}
+		isOwner(diary, userId);
 
 		return new GetDiaryResponseDto(diary);
+	}
+
+	@Override
+	@Transactional
+	public UpdateDiaryResponseDto updateDiary(Long userId, Long diaryId, UpdateDiaryRequestDto requestDto) {
+
+		Diary diary = findDiaryById(diaryId);
+		isOwner(diary, userId);
+
+		diary.updateDiary(requestDto);
+
+		return new UpdateDiaryResponseDto(diaryId, "성공적으로 일기를 수정했습니다.");
 	}
 
 	public Diary findDiaryById(Long diaryId) {
 		return diaryRepository.findById(diaryId)
 			.orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+	}
+
+	public void isOwner(Diary diary, Long userId) {
+		if (!diary.getUserId().equals(userId)) {
+			throw new CustomException(ErrorCode.FORBIDDEN);
+		}
 	}
 }

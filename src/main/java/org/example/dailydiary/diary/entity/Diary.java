@@ -1,6 +1,7 @@
 package org.example.dailydiary.diary.entity;
 
 import org.example.dailydiary.common.entity.BaseEntity;
+import org.example.dailydiary.diary.dto.request.UpdateDiaryRequestDto;
 import org.example.dailydiary.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -54,5 +55,11 @@ public class Diary extends BaseEntity {
 
 	public Long getUserId() {
 		return this.user.getId();
+	}
+
+	public void updateDiary(UpdateDiaryRequestDto requestDto) {
+		this.title = requestDto.getTitle();
+		this.contents = requestDto.getContents();
+		this.feeling = requestDto.getFeeling();
 	}
 }

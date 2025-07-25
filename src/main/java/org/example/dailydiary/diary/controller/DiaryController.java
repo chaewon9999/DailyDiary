@@ -2,8 +2,10 @@ package org.example.dailydiary.diary.controller;
 
 import org.example.dailydiary.common.security.CustomUserPrincipal;
 import org.example.dailydiary.diary.dto.request.CreateDiaryRequestDto;
+import org.example.dailydiary.diary.dto.request.UpdateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.response.CreateDiaryResponseDto;
 import org.example.dailydiary.diary.dto.response.GetDiaryResponseDto;
+import org.example.dailydiary.diary.dto.response.UpdateDiaryResponseDto;
 import org.example.dailydiary.diary.service.DiaryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +60,18 @@ public class DiaryController {
 		@PathVariable Long diaryId
 	) {
 		GetDiaryResponseDto responseDto = diaryService.getDiaryById(principal.userIdConverter(), diaryId);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(responseDto);
+	}
+
+	@PutMapping("/{diaryId}")
+	public ResponseEntity<UpdateDiaryResponseDto> updateDiary(
+		@AuthenticationPrincipal CustomUserPrincipal principal,
+		@PathVariable Long diaryId,
+		@RequestBody @Valid UpdateDiaryRequestDto requestDto
+	) {
+		UpdateDiaryResponseDto responseDto = diaryService.updateDiary(principal.userIdConverter(), diaryId, requestDto);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(responseDto);

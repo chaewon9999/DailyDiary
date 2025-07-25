@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService{
 	private final JwtUtil jwtUtil;
 	private final BCryptPasswordEncoder passwordEncoder;
 
+	//회원가입
 	@Override
 	@Transactional
 	public CreateUserResponseDto saveUser(CreateUserRequestDto requestDto) {
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService{
 		return new CreateUserResponseDto(savedUser.getId(), "회원가입을 완료했습니다.");
 	}
 
+	//로그인
 	@Transactional
 	public LoginUserResponseDto loginUser(LoginUserRequestDto requestDto) {
 
@@ -64,6 +66,7 @@ public class UserServiceImpl implements UserService{
 		return new LoginUserResponseDto(user.getId(), accessToken, refreshToken);
 	}
 
+	//유저 정보 조회
 	@Transactional(readOnly = true)
 	public GetProfileResponseDto getProfile(Long userId) {
 
@@ -72,6 +75,7 @@ public class UserServiceImpl implements UserService{
 		return new GetProfileResponseDto(user);
 	}
 
+	//유저 정보 수정
 	@Transactional
 	public UpdateUserResponseDto updateProfile(Long userId, UpdateUserRequestDto requestDto) {
 
@@ -86,6 +90,7 @@ public class UserServiceImpl implements UserService{
 		return new UpdateUserResponseDto(userId, "회원 정보 수정을 완료했습니다.");
 	}
 
+	//유저 삭제
 	@Transactional
 	public void deleteUser(Long userId) {
 

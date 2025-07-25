@@ -31,6 +31,11 @@ public class UserController {
 
 	private final UserService userService;
 
+	/**
+	 * 회원가입
+	 * @param requestDto email, password, checkPassword, nickname
+	 * @return userId, 회원가입 완료 메시지(String)
+	 */
 	@PostMapping("/signup")
 	public ResponseEntity<CreateUserResponseDto> createUser(
 		@RequestBody @Valid CreateUserRequestDto requestDto
@@ -41,6 +46,11 @@ public class UserController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 로그인
+	 * @param requestDto email, password
+	 * @return userId, accessToken, refreshToken
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<LoginUserResponseDto> loginUser(
 		@RequestBody @Valid LoginUserRequestDto requestDto
@@ -51,6 +61,11 @@ public class UserController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 유저 정보 조회
+	 * @param principal userId, userRole
+	 * @return userId, email, nickname
+	 */
 	@GetMapping
 	public ResponseEntity<GetProfileResponseDto> getProfile(
 		@AuthenticationPrincipal CustomUserPrincipal principal
@@ -61,6 +76,12 @@ public class UserController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 유저 정보 수정
+	 * @param principal userId, userRole
+	 * @param requestDto email, password, checkPassword, nickname
+	 * @return userId, 유저 정보 수정 완료 메시지(String)
+	 */
 	@PutMapping
 	public ResponseEntity<UpdateUserResponseDto> updateProfile(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
@@ -72,6 +93,11 @@ public class UserController {
 			.body(responseDto);
 	}
 
+	/**
+	 * 유저 삭제
+	 * @param principal userId, userRole
+	 * @return 유저 삭제 완료 메시지(String)
+	 */
 	@DeleteMapping
 	public ResponseEntity<DeleteUserResponseDto> deleteUser(
 		@AuthenticationPrincipal CustomUserPrincipal principal

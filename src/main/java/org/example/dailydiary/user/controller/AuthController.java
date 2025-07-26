@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "Auth API")
+@SecurityRequirement(name = "JWT")
 public class AuthController {
 
 	private final AuthService authService;
@@ -30,6 +35,7 @@ public class AuthController {
 	 * @return accessToken
 	 */
 	@PostMapping("/reissue")
+	@Operation(summary = "토큰 재발급")
 	public ResponseEntity<ReissueAccessTokenResponseDto> reissueAccessToken(
 		HttpServletRequest request
 	) {
@@ -49,6 +55,7 @@ public class AuthController {
 	 */
 	@PatchMapping("/reactive/user/{userId}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "삭제된 유저 복구")
 	public ResponseEntity<ReactiveUserResponseDto> reactiveUser(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@PathVariable Long userId

@@ -22,12 +22,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@Tag(name = "User API")
+@SecurityRequirement(name = "JWT")
 public class UserController {
 
 	private final UserService userService;
@@ -38,6 +43,7 @@ public class UserController {
 	 * @return userId, 회원가입 완료 메시지(String)
 	 */
 	@PostMapping("/signup")
+	@Operation(summary = "회원가입")
 	public ResponseEntity<CreateUserResponseDto> createUser(
 		@RequestBody @Valid CreateUserRequestDto requestDto
 	) {
@@ -53,6 +59,7 @@ public class UserController {
 	 * @return userId, accessToken, refreshToken
 	 */
 	@PostMapping("/login")
+	@Operation(summary = "로그인")
 	public ResponseEntity<LoginUserResponseDto> loginUser(
 		@RequestBody @Valid LoginUserRequestDto requestDto
 	) {
@@ -68,6 +75,7 @@ public class UserController {
 	 * @return 로그아웃 완료 메시지(String)
 	 */
 	@DeleteMapping("/logout")
+	@Operation(summary = "로그아웃")
 	public ResponseEntity<LogoutUserResponseDto> logoutUser(
 		@AuthenticationPrincipal CustomUserPrincipal principal
 	) {
@@ -83,6 +91,7 @@ public class UserController {
 	 * @return userId, email, nickname
 	 */
 	@GetMapping
+	@Operation(summary = "유저 정보 조회")
 	public ResponseEntity<GetProfileResponseDto> getProfile(
 		@AuthenticationPrincipal CustomUserPrincipal principal
 	) {
@@ -99,6 +108,7 @@ public class UserController {
 	 * @return userId, 유저 정보 수정 완료 메시지(String)
 	 */
 	@PutMapping
+	@Operation(summary = "유저 정보 수정")
 	public ResponseEntity<UpdateUserResponseDto> updateProfile(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@RequestBody @Valid UpdateUserRequestDto requestDto
@@ -115,6 +125,7 @@ public class UserController {
 	 * @return 유저 삭제 완료 메시지(String)
 	 */
 	@DeleteMapping
+	@Operation(summary = "유저 삭제")
 	public ResponseEntity<DeleteUserResponseDto> deleteUser(
 		@AuthenticationPrincipal CustomUserPrincipal principal
 	) {

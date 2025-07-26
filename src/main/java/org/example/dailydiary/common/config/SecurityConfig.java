@@ -34,7 +34,7 @@ public class SecurityConfig {
 			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/user/signup", "/user/login", "/auth/reissue").permitAll()
+				.requestMatchers("/user/signup", "/user/login", "/auth/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 				.requestMatchers("/h2-console/**").permitAll()  // H2 Console 허용
 				.anyRequest().authenticated()
 			)

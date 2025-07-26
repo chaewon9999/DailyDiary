@@ -24,12 +24,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/diary")
+@Tag(name = "Diary API")
+@SecurityRequirement(name = "JWT")
 public class DiaryController {
 
 	private final DiaryService diaryService;
@@ -41,6 +46,7 @@ public class DiaryController {
 	 * @return diaryId, 일기 생성 완료 메시지(String)
 	 */
 	@PostMapping
+	@Operation(summary = "일기 생성")
 	public ResponseEntity<CreateDiaryResponseDto> createDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@RequestBody @Valid CreateDiaryRequestDto requestDto
@@ -58,6 +64,7 @@ public class DiaryController {
 	 * @return diaryId, title, contents, feeling, createdAt, modifiedAt
 	 */
 	@GetMapping
+	@Operation(summary = "일기 전체 조회")
 	public ResponseEntity<Page<GetDiaryResponseDto>> getAllDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -75,6 +82,7 @@ public class DiaryController {
 	 * @return diaryId, title, contents, feeling, createdAt, modifiedAt
 	 */
 	@GetMapping("/{diaryId}")
+	@Operation(summary = "일기 단건 조회")
 	public ResponseEntity<GetDiaryResponseDto> getDiaryById(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@PathVariable Long diaryId
@@ -93,6 +101,7 @@ public class DiaryController {
 	 * @return diaryId, 일기 수정 완료 메시지(String)
 	 */
 	@PutMapping("/{diaryId}")
+	@Operation(summary = "일기 수정")
 	public ResponseEntity<UpdateDiaryResponseDto> updateDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@PathVariable Long diaryId,
@@ -111,6 +120,7 @@ public class DiaryController {
 	 * @return 일기 삭제 완료 메시지(String)
 	 */
 	@DeleteMapping("/{diaryId}")
+	@Operation(summary = "일기 삭제")
 	public ResponseEntity<DeleteDiaryResponseDto> deleteDiary(
 		@AuthenticationPrincipal CustomUserPrincipal principal,
 		@PathVariable Long diaryId

@@ -64,6 +64,10 @@ public class UserServiceImpl implements UserService{
 			throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
 		}
 
+		if (user.getDeletedAt() != null) {
+			throw new CustomException(ErrorCode.USER_NOT_FOUND);
+		}
+
 		String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getRole());
 		String refreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getRole());
 

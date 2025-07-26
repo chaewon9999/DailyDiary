@@ -43,8 +43,6 @@ public class AuthServiceImpl implements AuthService{
 		Long userId = Long.parseLong(claims.getSubject());
 
 		if (!tokenManager.isValidRefreshToken(userId, authorization)) {
-			System.out.println("saved: " + tokenManager.getRefreshToken(userId));
-			System.out.println("new: " + authorization);
 			throw new CustomException(ErrorCode.INVALID_TOKEN);
 		}
 

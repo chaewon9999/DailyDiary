@@ -1,11 +1,14 @@
 package org.example.dailydiary.diary.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.example.dailydiary.common.exception.CustomException;
+import org.example.dailydiary.common.exception.ErrorCode;
 import org.example.dailydiary.diary.dto.request.CreateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.request.UpdateDiaryRequestDto;
 import org.example.dailydiary.diary.dto.response.CreateDiaryResponseDto;
@@ -27,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +51,6 @@ class DiaryServiceTest {
 
 	@BeforeEach
 	void setUp() {
-
 		this.user = User.builder()
 			.email("test@test.com")
 			.password("password")
@@ -157,5 +160,21 @@ class DiaryServiceTest {
 
 		//then
 		assertThat("성공적으로 삭제되었습니다.").isEqualTo(responseDto.getMessage());
+	}
+
+	@Test
+	void 일기_아이디가_일치하지_않아_삭제_실패한다() {
+		//given
+		Long invalidDiaryId = 5L;
+		Long diaryId = diary1.getId();
+
+		when(diaryRepository.findById(invalidDiaryId)).thenReturn(Optional.empty());
+
+		//when
+		CustomException e = assertThrows(CustomException.class,
+			() -> diaryService.deleteDiary(user.getId(), invalidDiaryId));
+
+		//then
+		assertThat(ErrorCode.DIARY_NOT_FOUND).isEqualTo(e.getErrorCode());
 	}
 }

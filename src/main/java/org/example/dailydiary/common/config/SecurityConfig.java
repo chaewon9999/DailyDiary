@@ -3,6 +3,7 @@ package org.example.dailydiary.common.config;
 import org.example.dailydiary.common.security.CustomUserDetailsService;
 import org.example.dailydiary.common.security.JwtFilter;
 import org.example.dailydiary.common.security.JwtUtil;
+import org.example.dailydiary.common.security.WhiteList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +29,13 @@ public class SecurityConfig {
 	private final CustomUserDetailsService userDetailsService;
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http, WhiteList whiteList) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/user/signup", "/user/login", "/auth/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+				.requestMatchers(whiteList.getUrls().toArray(new String[0])).permitAll()
 				.anyRequest().authenticated()
 			)
 			.logout(logout -> logout

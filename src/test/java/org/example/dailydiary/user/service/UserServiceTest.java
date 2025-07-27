@@ -50,7 +50,6 @@ class UserServiceTest {
 
 	@BeforeEach
 	void setUp() {
-
 		this.user = User.builder()
 			.email("test@test.com")
 			.password(passwordEncoder.encode("password"))

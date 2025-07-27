@@ -109,7 +109,7 @@ dailydiary
 
 ## 📝 API 문서
 
-**Swagger 링크: http://3.35.11.28:8080/swagger-ui/index.html**
+**Swagger 링크: http://43.201.77.96:8080/swagger-ui/index.html**
 
 ### 💫 참고사항
 > **Diary API** </br>
